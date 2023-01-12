@@ -1,10 +1,18 @@
 package pl.lotto.winningnumbergenerator;
 
-import java.util.List;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class NumberGeneratorFacade {
 
-    public List<Integer> retrieveWonNumbersForDate() {
-        return List.of(1, 2, 3, 4, 5, 6);
+    private final NumberGenerator numberGenerator;
+
+    public NumberGeneratorFacade(NumberGenerator numberGenerator) {
+        this.numberGenerator = numberGenerator;
     }
+
+    public WinningNumbers retrieveWonNumbersForDate(LocalDateTime date) {
+        return new WinningNumbers(date, numberGenerator.getNumbers());
+    }
+
 }
