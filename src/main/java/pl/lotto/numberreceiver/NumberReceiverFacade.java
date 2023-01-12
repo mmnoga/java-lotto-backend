@@ -10,23 +10,21 @@ import java.time.temporal.TemporalAdjusters;
 
 public class NumberReceiverFacade {
 
-    private final NumberReceiver numberReceiver;
-
-    public NumberReceiverFacade() {
-        this.numberReceiver = new NumberReceiver();
+    public NumberReceiverFacade(LocalDateTime date) {
+        this.date = date;
     }
 
-    public Ticket inputNumbers(List<Integer> userNumbers) {
+    public TicketDto inputNumbers(List<Integer> userNumbers) {
         NumberValidator numberValidator = new NumberValidator();
         ValidationResult validationResult = numberValidator.validate(userNumbers);
         if (validationResult.isNotValid()) {
-            return new Ticket(null,
+            return new TicketDto(null,
                     userNumbers,
                     null,
                     false,
                     validationResult.message());
         }
-        return new Ticket(TicketIdGenerator.getId(),
+        return new TicketDto(TicketIdGenerator.getId(),
                 userNumbers,
                 retrieveDrawDate(),
                 true,
@@ -39,5 +37,7 @@ public class NumberReceiverFacade {
                 .with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
                 .with(LocalTime.of(12, 0, 0, 0));
     }
+
+
 
 }

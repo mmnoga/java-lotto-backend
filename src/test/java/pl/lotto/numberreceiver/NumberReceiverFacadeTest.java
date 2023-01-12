@@ -14,7 +14,7 @@ public class NumberReceiverFacadeTest {
         // given
         NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
         // when
-        Ticket result = numberReceiver.inputNumbers(List.of(1,2,3,4,5,6));
+        TicketDto result = numberReceiver.inputNumbers(List.of(1,2,3,4,5,6));
         // then
         assertThat(result.isValid()).isTrue();
     }
@@ -25,7 +25,7 @@ public class NumberReceiverFacadeTest {
         // given
         NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
         // when
-        Ticket result = numberReceiver.inputNumbers(List.of(1,2,344,4,5,6));
+        TicketDto result = numberReceiver.inputNumbers(List.of(1,2,344,4,5,6));
         // then
         assertThat(result.isValid()).isFalse();
     }
@@ -36,7 +36,7 @@ public class NumberReceiverFacadeTest {
         // given
         NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
         // when
-        Ticket result = numberReceiver.inputNumbers(List.of(1,2,2,4,5,6));
+        TicketDto result = numberReceiver.inputNumbers(List.of(1,2,2,4,5,6));
         // then
         assertThat(result.isValid()).isFalse();
     }
@@ -47,7 +47,7 @@ public class NumberReceiverFacadeTest {
         // given
         NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
         // when
-        Ticket result = numberReceiver.inputNumbers(List.of(1,2,2,4,5));
+        TicketDto result = numberReceiver.inputNumbers(List.of(1,2,2,4,5));
         // then
         assertThat(result.isValid()).isFalse();
     }
@@ -58,7 +58,7 @@ public class NumberReceiverFacadeTest {
         // given
         NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
         // when
-        Ticket result = numberReceiver.inputNumbers(List.of(1,2,2,4,5,6,7));
+        TicketDto result = numberReceiver.inputNumbers(List.of(1,2,2,4,5,6,7));
         // then
         assertThat(result.isValid()).isFalse();
     }

@@ -1,15 +1,27 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.infrastructure;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import pl.lotto.numberreceiver.NumberReceiverFacade;
+import pl.lotto.numberreceiver.TicketDto;
 
-class NumberReceiver implements NumberProvider{
+class NumberReceiverConsoleApplication {
 
-    @Override
-    public List<Integer> getNumbers() throws IOException {
+    static int MIN_VALUE = 1;
+    static int MAX_VALUE = 99;
+    static int NUMBER_OF_DRAW = 6;
+
+    public static void main(String[] args) throws IOException {
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(LocalDateTime.now());
+        List<Integer> userNumbers = getNumbers();
+        TicketDto ticket = numberReceiverFacade.inputNumbers(userNumbers);
+        System.out.println(ticket);
+    }
+
+    private static List<Integer> getNumbers() throws IOException {
         List<Integer> userNumbers = new ArrayList<>();
         BufferedReader in;
         in = new BufferedReader((new InputStreamReader(System.in)));

@@ -3,7 +3,7 @@ package pl.lotto.numberreceiver;
 import java.time.LocalDateTime;
 import java.util.List;
 
-record Ticket(
+public record TicketDto(
         String lotteryId,
         List<Integer> numbers,
         LocalDateTime drawDate,
