@@ -10,6 +10,8 @@ import java.time.temporal.TemporalAdjusters;
 
 public class NumberReceiverFacade {
 
+    private LocalDateTime date;
+
     public NumberReceiverFacade(LocalDateTime date) {
         this.date = date;
     }
@@ -32,7 +34,7 @@ public class NumberReceiverFacade {
     }
 
     public LocalDateTime retrieveDrawDate() {
-        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime currentDate = this.date;
         return currentDate
                 .with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
                 .with(LocalTime.of(12, 0, 0, 0));
