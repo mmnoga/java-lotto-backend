@@ -10,12 +10,6 @@ import java.time.temporal.TemporalAdjusters;
 
 public class NumberReceiverFacade {
 
-    private LocalDateTime date;
-
-    public NumberReceiverFacade(LocalDateTime date) {
-        this.date = date;
-    }
-
     public TicketDto inputNumbers(List<Integer> userNumbers) {
         NumberValidator numberValidator = new NumberValidator();
         ValidationResult validationResult = numberValidator.validate(userNumbers);
@@ -34,12 +28,10 @@ public class NumberReceiverFacade {
     }
 
     public LocalDateTime retrieveDrawDate() {
-        LocalDateTime currentDate = this.date;
+        LocalDateTime currentDate = LocalDateTime.now();
         return currentDate
                 .with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
                 .with(LocalTime.of(12, 0, 0, 0));
     }
-
-
 
 }

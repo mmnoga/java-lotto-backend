@@ -16,7 +16,7 @@ class NumberReceiverConsoleApplication {
     static int NUMBER_OF_DRAW = 6;
 
     public static void main(String[] args) throws IOException {
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(LocalDateTime.now());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
         List<Integer> userNumbers = getNumbers();
         TicketDto ticket = numberReceiverFacade.inputNumbers(userNumbers);
         System.out.println(ticket);
