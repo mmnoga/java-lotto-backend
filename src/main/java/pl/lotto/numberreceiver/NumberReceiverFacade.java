@@ -1,7 +1,5 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.util.TicketIdGenerator;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,6 +10,7 @@ public class NumberReceiverFacade {
 
     public TicketDto inputNumbers(List<Integer> userNumbers) {
         NumberValidator numberValidator = new NumberValidator();
+        TicketIdGenerator ticketIdGenerator = new TicketIdGenerator();
         ValidationResult validationResult = numberValidator.validate(userNumbers);
         if (validationResult.isNotValid()) {
             return new TicketDto(null,
@@ -20,7 +19,7 @@ public class NumberReceiverFacade {
                     false,
                     validationResult.message());
         }
-        return new TicketDto(TicketIdGenerator.getId(),
+        return new TicketDto(ticketIdGenerator.getId(),
                 userNumbers,
                 retrieveDrawDate(),
                 true,
