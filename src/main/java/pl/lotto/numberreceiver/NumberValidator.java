@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static pl.lotto.numberreceiver.NumberProvider.MAX_VALUE;
-import static pl.lotto.numberreceiver.NumberProvider.MIN_VALUE;
 import static pl.lotto.numberreceiver.ValidationError.*;
 
 class NumberValidator {
+
+    private final int MIN_VALUE = 1;
+    private final int MAX_VALUE = 99;
 
     ValidationResult validate(List<Integer> userNumbers) {
         List<ValidationError> errors = new ArrayList<>();
