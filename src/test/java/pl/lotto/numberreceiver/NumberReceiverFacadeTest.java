@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberReceiverFacadeTest {
 
-    private final LocalDateTime date = LocalDateTime.of(2023, 1, 18, 11, 5);
+    private final LocalDateTime date = LocalDateTime.of(2023, 1, 5, 11, 5);
 
     @Test
     @DisplayName("Should return valid ticket when user gave six correct numbers")
@@ -109,12 +109,14 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return correct draw date for valid ticket")
     public void should_return_correct_draw_date_for_valid_ticket() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
+        LocalDateTime ticketDate = LocalDateTime.of(2023,1,10,11,15);
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(ticketDate);
+        LocalDateTime drawDate = LocalDateTime.of(2023,1,14,12,0);
         // when
         TicketDto ticket = numberReceiver.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
-        DrawDateDto result = numberReceiver.retrieveDrawDate(LocalDateTime.now());
+        DrawDateDto result = new DrawDateDto(drawDate);
         // then
-        assertThat(result).isEqualTo(ticket.drawDate());
+        assertThat(ticket.drawDate()).isEqualTo(result);
     }
 
     @Test
@@ -123,9 +125,9 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 18, 11, 15);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 21, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(ticketDate);
         // when
-        DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
+        DrawDateDto result = numberReceiver.retrieveDrawDate();
         // then
         assertThat(result.drawDate()).isEqualTo(drawDate);
     }
@@ -134,11 +136,11 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return correct draw date for ticket from 2023/1/21 before 12:00")
     public void should_return_correct_draw_date_for_ticket_from_2023_1_21_before_12_00() {
         // given
-        LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 11, 15);
+        LocalDateTime ticketDate = LocalDateTime.of(2023,1,21,10,13);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 21, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(ticketDate);
         // when
-        DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
+        DrawDateDto result = numberReceiver.retrieveDrawDate();
         // then
         assertThat(result.drawDate()).isEqualTo(drawDate);
     }
@@ -147,11 +149,11 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return correct draw date for ticket from 2023/1/21 after 11:59")
     public void should_return_correct_draw_date_for_ticket_from_2023_1_21_after_12_00() {
         // given
-        LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 14, 45);
+        LocalDateTime ticketDate = LocalDateTime.of(2023,1,21,13,0);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 28, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(ticketDate);
         // when
-        DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
+        DrawDateDto result = numberReceiver.retrieveDrawDate();
         // then
         assertThat(result.drawDate()).isEqualTo(drawDate);
     }
@@ -160,11 +162,11 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return correct draw date for ticket from 2023/1/21 12:00")
     public void should_return_correct_draw_date_for_ticket_from_2023_1_21_12_00() {
         // given
-        LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 12, 0);
+        LocalDateTime ticketDate = LocalDateTime.of(2023,1,21,12,0);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 28, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(ticketDate);
         // when
-        DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
+        DrawDateDto result = numberReceiver.retrieveDrawDate();
         // then
         assertThat(result.drawDate()).isEqualTo(drawDate);
     }

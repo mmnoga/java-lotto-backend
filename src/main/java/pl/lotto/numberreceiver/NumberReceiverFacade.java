@@ -33,9 +33,9 @@ public class NumberReceiverFacade {
                 null);
     }
 
-    public DrawDateDto retrieveDrawDate(LocalDateTime ticketDate){
+    public DrawDateDto retrieveDrawDate(){
         DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
-        return drawDateGenerator.generateOrGetDrawDate(ticketDate);
+        return drawDateGenerator.generateOrGetDrawDate(this.date);
     }
 
 }
