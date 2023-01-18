@@ -1,6 +1,7 @@
 package pl.lotto.numberreceiver;
 
-import java.time.LocalDateTime;
+import pl.lotto.numberreceiver.dto.DrawDateDto;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class NumberReceiverRepositoryImpl implements NumberReceiverRepository {
     }
 
     @Override
-    public List<TicketEntity> findByDrawDate(LocalDateTime drawDate) {
+    public List<TicketEntity> findByDrawDate(DrawDateDto drawDate) {
         return tickets.values()
                 .stream()
                 .filter(t -> t.drawDate().equals(drawDate))

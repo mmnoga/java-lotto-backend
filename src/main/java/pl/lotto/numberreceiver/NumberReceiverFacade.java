@@ -8,6 +8,12 @@ import java.util.List;
 
 public class NumberReceiverFacade {
 
+    private final LocalDateTime date;
+
+    public NumberReceiverFacade(LocalDateTime date) {
+        this.date = date;
+    }
+
     public TicketDto inputNumbers(List<Integer> userNumbers) {
         NumberValidator numberValidator = new NumberValidator();
         TicketIdGenerator ticketIdGenerator = new TicketIdGenerator();
@@ -22,7 +28,7 @@ public class NumberReceiverFacade {
         }
         return new TicketDto(ticketIdGenerator.getId(),
                 userNumbers,
-                drawDateGenerator.generateOrGetDrawDate(LocalDateTime.now()),
+                drawDateGenerator.generateOrGetDrawDate(date),
                 true,
                 null);
     }

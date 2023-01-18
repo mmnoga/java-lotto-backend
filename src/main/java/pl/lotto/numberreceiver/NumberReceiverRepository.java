@@ -1,6 +1,7 @@
 package pl.lotto.numberreceiver;
 
-import java.time.LocalDateTime;
+import pl.lotto.numberreceiver.dto.DrawDateDto;
+
 import java.util.List;
 
 public interface NumberReceiverRepository {
@@ -9,6 +10,6 @@ public interface NumberReceiverRepository {
 
     List<TicketEntity> findAll();
 
-    List<TicketEntity> findByDrawDate(LocalDateTime drawDate);
+    List<TicketEntity> findByDrawDate(DrawDateDto drawDate);
 
 }

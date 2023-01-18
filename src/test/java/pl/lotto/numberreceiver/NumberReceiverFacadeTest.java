@@ -12,11 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberReceiverFacadeTest {
 
+    private final LocalDateTime date = LocalDateTime.of(2023, 1, 18, 11, 5);
+
     @Test
     @DisplayName("Should return valid ticket when user gave six correct numbers")
     public void should_return_valid_ticket_when_user_gave_six_correct_numbers() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         // then
@@ -27,7 +29,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return valid ticket with no error message when user gave six correct numbers")
     public void should_return_valid_ticket_with_no_error_message_when_user_gave_six_correct_numbers() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         // then
@@ -39,7 +41,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket when user gave out of range number")
     public void should_return_invalid_ticket_when_user_gave_out_of_range_number() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 344, 4, 5, 6));
         // then
@@ -50,7 +52,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket with 'out of range number' error message when user gave out of range number")
     public void should_return_invalid_ticket_with_error_message_when_user_gave_out_of_range_number() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 344, 4, 5, 6));
         // then
@@ -62,7 +64,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket when user gave duplicate number")
     public void should_return_invalid_ticket_when_user_gave_duplicate_number() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 2, 4, 5, 6));
         // then
@@ -73,7 +75,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket with 'repeated number' error message when user gave duplicate number")
     public void should_return_invalid_ticket_with_error_message_when_user_gave_duplicate_number() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 2, 4, 5, 6));
         // then
@@ -85,7 +87,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket when user gave less than six numbers")
     public void should_return_invalid_ticket_when_user_gave_less_than_six_numbers() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 2, 4, 5));
         // then
@@ -96,7 +98,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return invalid ticket when user gave more than six numbers")
     public void should_return_invalid_ticket_when_user_gave_more_than_six_numbers() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto result = numberReceiver.inputNumbers(List.of(1, 2, 3, 4, 5, 6, 7));
         // then
@@ -107,7 +109,7 @@ public class NumberReceiverFacadeTest {
     @DisplayName("Should return correct draw date for valid ticket")
     public void should_return_correct_draw_date_for_valid_ticket() {
         // given
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         TicketDto ticket = numberReceiver.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         DrawDateDto result = numberReceiver.retrieveDrawDate(LocalDateTime.now());
@@ -121,7 +123,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 18, 11, 15);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 21, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
         // then
@@ -134,7 +136,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 11, 15);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 21, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
         // then
@@ -147,7 +149,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 14, 45);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 28, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
         // then
@@ -160,7 +162,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime ticketDate = LocalDateTime.of(2023, 1, 21, 12, 0);
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 28, 12, 0);
-        NumberReceiverFacade numberReceiver = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiver = new NumberReceiverFacade(date);
         // when
         DrawDateDto result = numberReceiver.retrieveDrawDate(ticketDate);
         // then
@@ -172,9 +174,9 @@ public class NumberReceiverFacadeTest {
     public void should_return_all_tickets() {
         // given
         NumberReceiverRepositoryImpl numberReceiverRepository = new NumberReceiverRepositoryImpl();
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
-        TicketDto ticket1 = numberReceiverFacade.inputNumbers(List.of(1,2,3,4,5,6));
-        TicketDto ticket2 = numberReceiverFacade.inputNumbers(List.of(11,12,13,14,15,16));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(date);
+        TicketDto ticket1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
+        TicketDto ticket2 = numberReceiverFacade.inputNumbers(List.of(11, 12, 13, 14, 15, 16));
         numberReceiverRepository.save(mapTicket(ticket1));
         numberReceiverRepository.save(mapTicket(ticket2));
         // when
@@ -182,6 +184,31 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("Should return all tickets for given date")
+    public void should_return_all_tickets_for_given_date() {
+        // given
+        LocalDateTime ticketDate1 = LocalDateTime.of(2023, 1, 3, 10, 5);
+        LocalDateTime ticketDate2 = LocalDateTime.of(2023, 1, 5, 11, 15);
+        LocalDateTime ticketDate3 = LocalDateTime.of(2023, 1, 10, 12, 33);
+        DrawDateDto drawDate = new DrawDateDto(LocalDateTime.of(2023, 1, 7, 12, 0));
+        NumberReceiverFacade numberReceiverFacade1 = new NumberReceiverFacade(ticketDate1);
+        NumberReceiverFacade numberReceiverFacade2 = new NumberReceiverFacade(ticketDate2);
+        NumberReceiverFacade numberReceiverFacade3 = new NumberReceiverFacade(ticketDate3);
+        TicketDto ticket1 = numberReceiverFacade1.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
+        TicketDto ticket2 = numberReceiverFacade2.inputNumbers(List.of(11, 12, 13, 14, 15, 16));
+        TicketDto ticket3 = numberReceiverFacade3.inputNumbers(List.of(21, 22, 23, 24, 25, 26));
+        NumberReceiverRepositoryImpl numberReceiverRepository = new NumberReceiverRepositoryImpl();
+        numberReceiverRepository.save(mapTicket(ticket1));
+        numberReceiverRepository.save(mapTicket(ticket2));
+        numberReceiverRepository.save(mapTicket(ticket3));
+        // when
+        List<TicketEntity> result = numberReceiverRepository.findByDrawDate(drawDate);
+        // then
+        assertThat(result.size()).isEqualTo(2);
+
     }
 
     private TicketEntity mapTicket(TicketDto ticket) {

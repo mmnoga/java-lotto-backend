@@ -3,6 +3,7 @@ package pl.lotto.infrastructure;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
@@ -15,7 +16,7 @@ class NumberReceiverConsoleApplication {
     static int NUMBER_OF_DRAW = 6;
 
     public static void main(String[] args) throws IOException {
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(LocalDateTime.now());
         List<Integer> userNumbers = getNumbers();
         TicketDto ticket = numberReceiverFacade.inputNumbers(userNumbers);
         System.out.println(ticket);
