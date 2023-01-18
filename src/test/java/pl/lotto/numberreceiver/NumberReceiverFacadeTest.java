@@ -210,7 +210,24 @@ public class NumberReceiverFacadeTest {
         List<TicketEntity> result = numberReceiverRepository.findByDrawDate(drawDate);
         // then
         assertThat(result.size()).isEqualTo(2);
+    }
 
+    @Test
+    @DisplayName("Should return all tickets for given date")
+    public void should_return_tickets_for_given_date(){
+        // given
+        LocalDateTime ticketDate1 = LocalDateTime.of(2023, 1, 3, 10, 5);
+        LocalDateTime ticketDate2 = LocalDateTime.of(2023, 1, 5, 11, 15);
+        LocalDateTime ticketDate3 = LocalDateTime.of(2023, 1, 10, 12, 33);
+        DrawDateDto drawDate = new DrawDateDto(LocalDateTime.of(2023, 1, 7, 12, 0));
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(ticketDate1);
+        TicketDto ticket1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
+        TicketDto ticket2 = numberReceiverFacade.inputNumbers(List.of(11, 12, 13, 14, 15, 16));
+        TicketDto ticket3 = numberReceiverFacade.inputNumbers(List.of(21, 22, 23, 24, 25, 26));
+        // when
+        List<TicketEntity> tickets = numberReceiverFacade.retrieveNumbersForDate(drawDate);
+        // then
+        assertThat(tickets.size()).isEqualTo(3);
     }
 
     private TicketEntity mapTicket(TicketDto ticket) {

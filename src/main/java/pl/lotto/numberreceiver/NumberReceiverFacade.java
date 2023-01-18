@@ -9,9 +9,11 @@ import java.util.List;
 public class NumberReceiverFacade {
 
     private final LocalDateTime date;
+    private final InMemoryNumberGenerator inMemoryNumberGenerator;
 
     public NumberReceiverFacade(LocalDateTime date) {
         this.date = date;
+        this.inMemoryNumberGenerator = new InMemoryNumberGenerator();
     }
 
     public TicketDto inputNumbers(List<Integer> userNumbers) {
@@ -26,16 +28,23 @@ public class NumberReceiverFacade {
                     false,
                     validationResult.message());
         }
-        return new TicketDto(ticketIdGenerator.getId(),
+        TicketDto ticket = new TicketDto(ticketIdGenerator.getId(),
                 userNumbers,
                 drawDateGenerator.generateOrGetDrawDate(date),
                 true,
                 null);
+        inMemoryNumberGenerator.save(
+                inMemoryNumberGenerator.mapTicket(ticket));
+        return ticket;
     }
 
     public DrawDateDto retrieveDrawDate(){
         DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
         return drawDateGenerator.generateOrGetDrawDate(this.date);
+    }
+
+    public List<TicketEntity> retrieveNumbersForDate(DrawDateDto date){
+        return inMemoryNumberGenerator.findByDrawDate(date);
     }
 
 }
