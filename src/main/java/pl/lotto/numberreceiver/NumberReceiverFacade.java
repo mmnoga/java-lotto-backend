@@ -1,16 +1,17 @@
 package pl.lotto.numberreceiver;
 
-import java.time.DayOfWeek;
+import pl.lotto.numberreceiver.dto.DrawDateDto;
+import pl.lotto.numberreceiver.dto.TicketDto;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.time.temporal.TemporalAdjusters;
 
 public class NumberReceiverFacade {
 
     public TicketDto inputNumbers(List<Integer> userNumbers) {
         NumberValidator numberValidator = new NumberValidator();
         TicketIdGenerator ticketIdGenerator = new TicketIdGenerator();
+        DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
         ValidationResult validationResult = numberValidator.validate(userNumbers);
         if (validationResult.isNotValid()) {
             return new TicketDto(null,
@@ -21,16 +22,14 @@ public class NumberReceiverFacade {
         }
         return new TicketDto(ticketIdGenerator.getId(),
                 userNumbers,
-                retrieveDrawDate(),
+                drawDateGenerator.generateOrGetDrawDate(LocalDateTime.now()),
                 true,
                 null);
     }
 
-    public LocalDateTime retrieveDrawDate() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        return currentDate
-                .with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
-                .with(LocalTime.of(12, 0, 0, 0));
+    public DrawDateDto retrieveDrawDate(LocalDateTime ticketDate){
+        DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
+        return drawDateGenerator.generateOrGetDrawDate(ticketDate);
     }
 
 }

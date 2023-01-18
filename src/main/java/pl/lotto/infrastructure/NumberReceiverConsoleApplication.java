@@ -3,11 +3,10 @@ package pl.lotto.infrastructure;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.TicketDto;
+import pl.lotto.numberreceiver.dto.TicketDto;
 
 class NumberReceiverConsoleApplication {
 
@@ -28,10 +27,9 @@ class NumberReceiverConsoleApplication {
         in = new BufferedReader((new InputStreamReader(System.in)));
         for (int i = 1; i < NUMBER_OF_DRAW + 1; i++) {
             while (true) {
-                System.out.print(
-                        String.format(
-                                "Enter %d of %d number (range %d to %d): ",
-                                i, NUMBER_OF_DRAW, MIN_VALUE, MAX_VALUE));
+                System.out.printf(
+                        "Enter %d of %d number (range %d to %d): ",
+                        i, NUMBER_OF_DRAW, MIN_VALUE, MAX_VALUE);
                 try {
                     int numberFromUser = Integer.parseInt(in.readLine());
                     userNumbers.add(numberFromUser);
