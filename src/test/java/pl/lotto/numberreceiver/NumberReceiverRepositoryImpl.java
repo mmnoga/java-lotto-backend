@@ -1,9 +1,9 @@
 package pl.lotto.numberreceiver;
 
 import pl.lotto.numberreceiver.dto.DrawDateDto;
-import pl.lotto.numberreceiver.dto.TicketListDto;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,18 +17,18 @@ public class NumberReceiverRepositoryImpl implements NumberReceiverRepository {
     }
 
     @Override
-    public TicketListDto findAll() {
-        return new TicketListDto(tickets.values()
+    public List<TicketEntity> findAll() {
+        return tickets.values()
                 .stream()
-                .toList());
+                .toList();
     }
 
     @Override
-    public TicketListDto findByDrawDate(DrawDateDto drawDate) {
-        return new TicketListDto(tickets.values()
+    public List<TicketEntity> findByDrawDate(DrawDateDto drawDate) {
+        return tickets.values()
                 .stream()
                 .filter(t -> t.drawDate().equals(drawDate))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,15 +1,16 @@
 package pl.lotto.numberreceiver;
 
 import pl.lotto.numberreceiver.dto.DrawDateDto;
-import pl.lotto.numberreceiver.dto.TicketListDto;
+
+import java.util.List;
 
 
 public interface NumberReceiverRepository {
 
     void save(TicketEntity ticket);
 
-    TicketListDto findAll();
+    List<TicketEntity> findAll();
 
-    TicketListDto findByDrawDate(DrawDateDto drawDate);
+    List<TicketEntity> findByDrawDate(DrawDateDto drawDate);
 
 }

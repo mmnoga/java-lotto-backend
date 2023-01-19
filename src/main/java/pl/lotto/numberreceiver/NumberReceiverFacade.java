@@ -45,7 +45,8 @@ public class NumberReceiverFacade {
     }
 
     public TicketListDto retrieveNumbersForDate(DrawDateDto date){
-        return inMemoryNumberGenerator.findByDrawDate(date);
+        return inMemoryNumberGenerator.mapList(
+                inMemoryNumberGenerator.findByDrawDate(date));
     }
 
 }

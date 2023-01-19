@@ -183,10 +183,10 @@ public class NumberReceiverFacadeTest {
         numberReceiverRepository.save(mapTicket(ticket1));
         numberReceiverRepository.save(mapTicket(ticket2));
         // when
-        TicketListDto result = numberReceiverRepository.findAll();
+        List<TicketEntity> result = numberReceiverRepository.findAll();
         // then
-        assertThat(result.ticketList()).isNotEmpty();
-        assertThat(result.ticketList().size()).isEqualTo(2);
+        assertThat(result).isNotEmpty();
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
@@ -208,9 +208,9 @@ public class NumberReceiverFacadeTest {
         numberReceiverRepository.save(mapTicket(ticket2));
         numberReceiverRepository.save(mapTicket(ticket3));
         // when
-        TicketListDto result = numberReceiverRepository.findByDrawDate(drawDate);
+        List<TicketEntity> result = numberReceiverRepository.findByDrawDate(drawDate);
         // then
-        assertThat(result.ticketList().size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
