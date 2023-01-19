@@ -3,10 +3,14 @@ package pl.lotto.infrastructure;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
+import pl.lotto.numberreceiver.NumberReceiverRepository;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 class NumberReceiverConsoleApplication {
@@ -14,9 +18,17 @@ class NumberReceiverConsoleApplication {
     static int MIN_VALUE = 1;
     static int MAX_VALUE = 99;
     static int NUMBER_OF_DRAW = 6;
+    static NumberReceiverRepository numberReceiverRepository = new InMemoryNumberReceiverConsoleApplicationImpl();
 
     public static void main(String[] args) throws IOException {
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(LocalDateTime.now());
+        final Clock date = new AdjustableClock(
+                LocalDateTime.of(2023, 1, 5, 11, 5)
+                        .toInstant(ZoneOffset.UTC),
+                ZoneId.systemDefault());
+        NumberReceiverFacade numberReceiverFacade =
+                new NumberReceiverFacade(
+                        date,
+                        numberReceiverRepository);
         List<Integer> userNumbers = getNumbers();
         TicketDto ticket = numberReceiverFacade.inputNumbers(userNumbers);
         System.out.println(ticket);

@@ -1,11 +1,14 @@
 package pl.lotto.numberreceiver.dto;
 
-import java.util.List;
+import lombok.Builder;
 
+import java.time.LocalDateTime;
+import java.util.List;
+@Builder
 public record TicketDto(
         String lotteryId,
         List<Integer> numbers,
-        DrawDateDto drawDate,
+        LocalDateTime drawDate,
         boolean isValid,
         String message
 ) {
