@@ -2,13 +2,13 @@ package pl.lotto.numberreceiver;
 
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.numberreceiver.dto.TicketListDto;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class InMemoryNumberGenerator implements NumberReceiverRepository{
+public class InMemoryNumberGenerator implements NumberReceiverRepository {
 
     Map<String, TicketEntity> tickets = new HashMap<>();
 
@@ -22,18 +22,18 @@ public class InMemoryNumberGenerator implements NumberReceiverRepository{
     }
 
     @Override
-    public List<TicketEntity> findAll() {
-        return tickets.values()
+    public TicketListDto findAll() {
+        return new TicketListDto(tickets.values()
                 .stream()
-                .toList();
+                .toList());
     }
 
     @Override
-    public List<TicketEntity> findByDrawDate(DrawDateDto drawDate) {
-        return tickets.values()
+    public TicketListDto findByDrawDate(DrawDateDto drawDate) {
+        return new TicketListDto(tickets.values()
                 .stream()
                 .filter(t -> t.drawDate().equals(drawDate))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
 }

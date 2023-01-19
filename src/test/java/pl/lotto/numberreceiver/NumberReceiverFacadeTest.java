@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.numberreceiver.dto.TicketListDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -182,10 +183,10 @@ public class NumberReceiverFacadeTest {
         numberReceiverRepository.save(mapTicket(ticket1));
         numberReceiverRepository.save(mapTicket(ticket2));
         // when
-        List<TicketEntity> result = numberReceiverRepository.findAll();
+        TicketListDto result = numberReceiverRepository.findAll();
         // then
-        assertThat(result).isNotEmpty();
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.ticketList()).isNotEmpty();
+        assertThat(result.ticketList().size()).isEqualTo(2);
     }
 
     @Test
@@ -207,9 +208,9 @@ public class NumberReceiverFacadeTest {
         numberReceiverRepository.save(mapTicket(ticket2));
         numberReceiverRepository.save(mapTicket(ticket3));
         // when
-        List<TicketEntity> result = numberReceiverRepository.findByDrawDate(drawDate);
+        TicketListDto result = numberReceiverRepository.findByDrawDate(drawDate);
         // then
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.ticketList().size()).isEqualTo(2);
     }
 
     @Test
@@ -225,9 +226,9 @@ public class NumberReceiverFacadeTest {
         TicketDto ticket2 = numberReceiverFacade.inputNumbers(List.of(11, 12, 13, 14, 15, 16));
         TicketDto ticket3 = numberReceiverFacade.inputNumbers(List.of(21, 22, 23, 24, 25, 26));
         // when
-        List<TicketEntity> tickets = numberReceiverFacade.retrieveNumbersForDate(drawDate);
+        TicketListDto tickets = numberReceiverFacade.retrieveNumbersForDate(drawDate);
         // then
-        assertThat(tickets.size()).isEqualTo(3);
+        assertThat(tickets.ticketList().size()).isEqualTo(3);
     }
 
     private TicketEntity mapTicket(TicketDto ticket) {
