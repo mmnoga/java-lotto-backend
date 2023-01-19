@@ -1,18 +1,12 @@
 package pl.lotto.winningnumbergenerator;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
+import pl.lotto.numberreceiver.dto.DrawDateDto;
+import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
 public class NumberGeneratorFacade {
 
-    private final NumberGenerator numberGenerator;
-
-    public NumberGeneratorFacade(NumberGenerator numberGenerator) {
-        this.numberGenerator = numberGenerator;
-    }
-
-    public WinningNumbers retrieveWonNumbersForDate(LocalDateTime date) {
-        return new WinningNumbers(date, numberGenerator.getNumbers());
+    public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
+        return null;
     }
 
 }
