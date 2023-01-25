@@ -8,9 +8,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.NumberReceiverRepository;
+import pl.lotto.numberreceiver.TicketEntity;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 class NumberReceiverConsoleApplication {
@@ -18,11 +23,33 @@ class NumberReceiverConsoleApplication {
     static int MIN_VALUE = 1;
     static int MAX_VALUE = 99;
     static int NUMBER_OF_DRAW = 6;
-    static NumberReceiverRepository numberReceiverRepository = new InMemoryNumberReceiverConsoleApplicationImpl();
+    static Map<String, TicketEntity> tickets = new HashMap<>();
+    static NumberReceiverRepository numberReceiverRepository = new NumberReceiverRepository() {
+        @Override
+        public TicketEntity save(TicketEntity ticket) {
+            tickets.put(ticket.lotteryId(), ticket);
+            return ticket;
+        }
+
+        @Override
+        public List<TicketEntity> findAll() {
+            return tickets.values()
+                    .stream()
+                    .toList();
+        }
+
+        @Override
+        public List<TicketEntity> findByDrawDate(LocalDateTime drawDate) {
+            return tickets.values()
+                    .stream()
+                    .filter(t -> t.drawDate().equals(drawDate))
+                    .collect(Collectors.toList());
+        }
+    };
 
     public static void main(String[] args) throws IOException {
         final Clock date = new AdjustableClock(
-                LocalDateTime.of(2023, 1, 5, 11, 5)
+                LocalDateTime.now()
                         .toInstant(ZoneOffset.UTC),
                 ZoneId.systemDefault());
         NumberReceiverFacade numberReceiverFacade =
