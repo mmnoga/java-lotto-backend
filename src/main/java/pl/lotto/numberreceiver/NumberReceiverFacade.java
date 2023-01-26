@@ -12,16 +12,23 @@ public class NumberReceiverFacade {
 
     private final Clock clock;
     private final NumberReceiverRepository numberReceiverRepository;
+    private final NumberValidator numberValidator;
+    private final DrawDateGenerator drawDateGenerator;
+    private final TicketIdGenerator ticketIdGenerator;
 
-    public NumberReceiverFacade(Clock clock, NumberReceiverRepository numberReceiverRepository) {
+    NumberReceiverFacade(Clock clock,
+                         NumberReceiverRepository numberReceiverRepository,
+                         NumberValidator numberValidator,
+                         DrawDateGenerator drawDateGenerator,
+                         TicketIdGenerator ticketIdGenerator) {
         this.clock = clock;
         this.numberReceiverRepository = numberReceiverRepository;
+        this.numberValidator = numberValidator;
+        this.drawDateGenerator = drawDateGenerator;
+        this.ticketIdGenerator = ticketIdGenerator;
     }
 
     public TicketDto inputNumbers(List<Integer> userNumbers) {
-        NumberValidator numberValidator = new NumberValidator();
-        TicketIdGenerator ticketIdGenerator = new TicketIdGenerator();
-        DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
         ValidationResult validationResult = numberValidator.validate(userNumbers);
         if (validationResult.isNotValid()) {
             return new TicketDto(null,
@@ -40,13 +47,13 @@ public class NumberReceiverFacade {
         return TicketMapper.mapFromTicketEntityToTicketDto(ticket);
     }
 
-    public DrawDateDto retrieveDrawDate(){
+    public DrawDateDto retrieveNextDrawDate() {
         DrawDateGenerator drawDateGenerator = new DrawDateGenerator();
         LocalDateTime dateTime = drawDateGenerator.generateOrGetDrawDate(LocalDateTime.now(clock));
         return TicketMapper.mapFromLocalDateTimeToDrawDateDto(dateTime);
     }
 
-    public List<TicketDto> retrieveNumbersForDate(DrawDateDto date){
+    public List<TicketDto> retrieveNumbersForDate(DrawDateDto date) {
         List<TicketEntity> byDrawDate = numberReceiverRepository.findByDrawDate(date.drawDate());
         return byDrawDate.stream()
                 .map(TicketMapper::mapFromTicketEntityToTicketDto)

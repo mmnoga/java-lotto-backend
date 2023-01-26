@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import pl.lotto.numberreceiver.NumberReceiverConfiguration;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.NumberReceiverRepository;
 import pl.lotto.numberreceiver.TicketEntity;
@@ -52,8 +53,9 @@ class NumberReceiverConsoleApplication {
                 LocalDateTime.now()
                         .toInstant(ZoneOffset.UTC),
                 ZoneId.systemDefault());
+        NumberReceiverConfiguration numberReceiverConfiguration = new NumberReceiverConfiguration();
         NumberReceiverFacade numberReceiverFacade =
-                new NumberReceiverFacade(
+                numberReceiverConfiguration.createdForTest(
                         date,
                         numberReceiverRepository);
         List<Integer> userNumbers = getNumbers();

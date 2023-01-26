@@ -11,7 +11,7 @@ class NumbersGenerator {
     private final int MAX_VALUE = 99;
     private final int NUMBER_OF_DRAW = 6;
 
-    public List<Integer> getRandomNumbers() {
+    public List<Integer> generateRandomNumbers() {
         Stream<Integer> randStream = Stream.generate(
                         this::generateRandomNumber)
                 .distinct()

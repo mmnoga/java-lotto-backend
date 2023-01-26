@@ -1,22 +1,21 @@
 package pl.lotto.winningnumbergenerator;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class InMemoryNumberGeneratorRepositoryImpl implements NumberGeneratorRepository{
 
+    Map<LocalDateTime, WinningNumbers> winningNumbers = new HashMap<>();
+
     @Override
-    public NumbersEntity save(NumbersEntity numbersEntity) {
+    public WinningNumbers save(WinningNumbers numbersEntity) {
         return null;
     }
 
     @Override
-    public NumbersEntity generateWinningNumbers() {
-        return null;
+    public Optional<WinningNumbers> findWinningNumbersByDrawDate(LocalDateTime drawDate) {
+        return Optional.empty();
     }
-
-    @Override
-    public NumbersEntity getWonNumbersForDate(LocalDateTime drawDate) {
-        return null;
-    }
-
 }

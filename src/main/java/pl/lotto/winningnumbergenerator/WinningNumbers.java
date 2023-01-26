@@ -3,7 +3,7 @@ package pl.lotto.winningnumbergenerator;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record NumbersEntity(
+record WinningNumbers(
         LocalDateTime drawDate,
         List<Integer> numbers
 ) {
