@@ -3,7 +3,7 @@ package pl.lotto.infrastructure;
 
 import java.time.*;
 
-public class AdjustableClock extends Clock {
+class AdjustableClock extends Clock {
 
     private final ZoneId zone;
     protected Instant instant;

@@ -1,9 +1,13 @@
 package pl.lotto.winningnumbergenerator;
 
+import java.time.LocalDateTime;
+
 public interface NumberGeneratorRepository {
 
-    void save (NumbersEntity numbersEntity);
+    NumbersEntity save(NumbersEntity numbersEntity);
 
+    NumbersEntity generateWinningNumbers();
 
+    NumbersEntity getWonNumbersForDate(LocalDateTime drawDate);
 
 }

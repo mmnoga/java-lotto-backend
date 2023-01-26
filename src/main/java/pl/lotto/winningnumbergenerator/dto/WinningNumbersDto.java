@@ -1,11 +1,10 @@
 package pl.lotto.winningnumbergenerator.dto;
 
-import pl.lotto.numberreceiver.dto.DrawDateDto;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record WinningNumbersDto(
-        DrawDateDto drawDate,
+        LocalDateTime drawDate,
         List<Integer> numbers
 ) {
 }
