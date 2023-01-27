@@ -77,7 +77,7 @@ class NumberGeneratorFacadeTest {
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 21, 12, 0);
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
         WinningNumbers winningNumbers = new WinningNumbers(drawDate, numbers);
-        NumbersGeneratorInterface numbersGenerator = new InMemoryNumbersGeneratorImpl(numbers);
+        NumbersGeneratorInterface numbersGenerator = new InMemoryNumbersGeneratorTestImpl(numbers);
         NumberGeneratorFacade numberGeneratorFacade =
                 numberGeneratorConfiguration.createdForTest(
                         ticketDate,

@@ -2,11 +2,11 @@ package pl.lotto.winningnumbergenerator;
 
 import java.util.List;
 
-public class InMemoryNumbersGeneratorImpl extends NumbersGenerator implements NumbersGeneratorInterface {
+public class InMemoryNumbersGeneratorTestImpl extends NumbersGenerator implements NumbersGeneratorInterface {
 
     private final List<Integer> numbers;
 
-    public InMemoryNumbersGeneratorImpl(List<Integer> numbers) {
+    public InMemoryNumbersGeneratorTestImpl(List<Integer> numbers) {
         this.numbers = numbers;
     }
 
