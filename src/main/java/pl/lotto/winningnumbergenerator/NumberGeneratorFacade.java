@@ -8,32 +8,35 @@ import java.util.List;
 
 public class NumberGeneratorFacade {
 
-    private NumberGeneratorRepository numbersGeneratorRepository;
-    private NumberReceiverFacade numberReceiverFacade;
-    private NumbersGenerator numbersGenerator;
+    private final NumberGeneratorRepository numbersGeneratorRepository;
+    private final NumberReceiverFacade numberReceiverFacade;
+    private final NumbersGeneratorInterface numbersGenerator;
 
     public NumberGeneratorFacade(NumberGeneratorRepository numbersGeneratorRepository,
                                  NumberReceiverFacade numberReceiverFacade,
-                                 NumbersGenerator numbersGenerator) {
+                                 NumbersGeneratorInterface numbersGenerator) {
         this.numbersGeneratorRepository = numbersGeneratorRepository;
         this.numberReceiverFacade = numberReceiverFacade;
         this.numbersGenerator = numbersGenerator;
     }
 
     public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
-        WinningNumbers winningNumbers = numbersGeneratorRepository
-                .findWinningNumbersByDrawDate(date.drawDate())
-                .orElseThrow(() ->
-                        new RuntimeException("Not found winning numbers for drawing date"));
-        return new WinningNumbersDto(winningNumbers.drawDate(), winningNumbers.numbers());
+        return WinningNumbersMapper
+                .mapFromWinningNumbersToWinningNumbersDto(
+                        numbersGeneratorRepository
+                                .findWinningNumbersByDrawDate(date.drawDate())
+                                .orElseThrow(() ->
+                                        new RuntimeException("Not found winning numbers for drawing date")));
     }
 
     //add scheduler...
     public WinningNumbersDto generateWonNumbersForNextDrawDate() {
         DrawDateDto drawDateDto = numberReceiverFacade.retrieveNextDrawDate();
         List<Integer> numbers = numbersGenerator.generateRandomNumbers();
-        WinningNumbers save = numbersGeneratorRepository.save(new WinningNumbers(drawDateDto.drawDate(), numbers));
-        return new WinningNumbersDto(save.drawDate(),save.numbers());
+        return WinningNumbersMapper
+                .mapFromWinningNumbersToWinningNumbersDto(
+                        numbersGeneratorRepository
+                                .save(new WinningNumbers(drawDateDto.drawDate(), numbers)));
     }
 
 }
