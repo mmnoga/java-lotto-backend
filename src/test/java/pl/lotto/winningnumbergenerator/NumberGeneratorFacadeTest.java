@@ -41,8 +41,7 @@ class NumberGeneratorFacadeTest {
         numberGeneratorRepository.save(winningNumbersForDrawDate2);
         NumberGeneratorFacade numberGeneratorFacade =
                 numberGeneratorConfiguration.createdForTest(
-                        ticketDate,
-                        numberReceiverRepository,
+                        null,
                         numberGeneratorRepository,
                         numbersGenerator);
         // when
@@ -58,8 +57,7 @@ class NumberGeneratorFacadeTest {
         DrawDateDto drawDate = new DrawDateDto(LocalDateTime.of(2023, 1, 21, 12, 0));
         NumberGeneratorFacade numberGeneratorFacade =
                 numberGeneratorConfiguration.createdForTest(
-                        ticketDate,
-                        numberReceiverRepository,
+                        null,
                         numberGeneratorRepository,
                         numbersGenerator);
         // when
@@ -78,10 +76,12 @@ class NumberGeneratorFacadeTest {
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
         WinningNumbers winningNumbers = new WinningNumbers(drawDate, numbers);
         NumbersGeneratorInterface numbersGenerator = new InMemoryNumbersGeneratorTestImpl(numbers);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
+                .createdForTest(
+                        ticketDate, numberReceiverRepository);
         NumberGeneratorFacade numberGeneratorFacade =
                 numberGeneratorConfiguration.createdForTest(
-                        ticketDate,
-                        numberReceiverRepository,
+                        numberReceiverFacade,
                         numberGeneratorRepository,
                         numbersGenerator);
         // when

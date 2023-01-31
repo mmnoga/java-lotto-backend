@@ -2,7 +2,7 @@ package pl.lotto.winningnumbergenerator;
 
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
-public class WinningNumbersMapper {
+class WinningNumbersMapper {
 
     public static WinningNumbersDto mapFromWinningNumbersToWinningNumbersDto(WinningNumbers winningNumbers) {
         return WinningNumbersDto.builder()

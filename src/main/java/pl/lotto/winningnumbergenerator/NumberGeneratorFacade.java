@@ -21,22 +21,23 @@ public class NumberGeneratorFacade {
     }
 
     public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
+        WinningNumbers winningNumbers = numbersGeneratorRepository
+                .findWinningNumbersByDrawDate(date.drawDate())
+                .orElseThrow(() ->
+                        new RuntimeException("Not found winning numbers for drawing date"));
         return WinningNumbersMapper
                 .mapFromWinningNumbersToWinningNumbersDto(
-                        numbersGeneratorRepository
-                                .findWinningNumbersByDrawDate(date.drawDate())
-                                .orElseThrow(() ->
-                                        new RuntimeException("Not found winning numbers for drawing date")));
+                        winningNumbers);
     }
 
     //add scheduler...
     public WinningNumbersDto generateWonNumbersForNextDrawDate() {
         DrawDateDto drawDateDto = numberReceiverFacade.retrieveNextDrawDate();
         List<Integer> numbers = numbersGenerator.generateRandomNumbers();
+        WinningNumbers save = numbersGeneratorRepository
+                .save(new WinningNumbers(drawDateDto.drawDate(), numbers));
         return WinningNumbersMapper
-                .mapFromWinningNumbersToWinningNumbersDto(
-                        numbersGeneratorRepository
-                                .save(new WinningNumbers(drawDateDto.drawDate(), numbers)));
+                .mapFromWinningNumbersToWinningNumbersDto(save);
     }
 
 }

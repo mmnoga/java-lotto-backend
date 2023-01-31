@@ -60,4 +60,8 @@ public class NumberReceiverFacade {
                 .collect(Collectors.toList());
     }
 
+    public List<TicketDto> retrieveNumbersForNextDrawDate() {
+        return retrieveNumbersForDate(retrieveNextDrawDate());
+    }
+
 }

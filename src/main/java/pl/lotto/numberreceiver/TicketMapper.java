@@ -5,7 +5,7 @@ import pl.lotto.numberreceiver.dto.TicketDto;
 
 import java.time.LocalDateTime;
 
-public class TicketMapper {
+class TicketMapper {
 
     public static TicketDto mapFromTicketEntityToTicketDto(TicketEntity ticket) {
         return TicketDto.builder()

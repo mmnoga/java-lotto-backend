@@ -1,10 +1,8 @@
-package pl.lotto.numberreceiver;
-
-import lombok.Builder;
+package pl.lotto.resultchecker;
 
 import java.time.LocalDateTime;
 import java.util.List;
-@Builder
+
 record TicketEntity(
         String lotteryId,
         List<Integer> numbers,
