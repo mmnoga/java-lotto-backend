@@ -4,8 +4,10 @@ import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.dto.PlayerResultDto;
 import pl.lotto.winningnumbergenerator.NumberGeneratorFacade;
+import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResultCheckerFacade {
 
@@ -19,11 +21,27 @@ public class ResultCheckerFacade {
 
     // add scheduler
     public List<PlayerResultDto> generateResults() {
-        List<TicketDto> tickets = numberReceiverFacade.retrieveNumbersForNextDrawDate();
-        return null;
+        List<TicketDto> ticketsDto = numberReceiverFacade
+                .retrieveNumbersForNextDrawDate();
+        WinningNumbersDto winningNumbersDto = numberGeneratorFacade
+                .generateWonNumbersForNextDrawDate();
+        List<PlayerResultDto> playerResultDtos = ticketsDto.stream()
+                .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
+                .toList();
+        return playerResultDtos.stream()
+                .map(r -> PlayerResultDto.builder()
+                        .drawDate(r.drawDate())
+                        .playerNumbers(r.playerNumbers())
+                        .hitNumber(checkHitNumber(r.playerNumbers(), winningNumbersDto))
+                        .build())
+                .filter(r -> r.hitNumber() > 2)
+                .collect(Collectors.toList());
     }
 
-    public String checkWinner(String uniqueLotteryId) {
-        return null;
+    private int checkHitNumber(List<Integer> userNumbers, WinningNumbersDto winningNumbers) {
+        return (int) userNumbers.stream()
+                .filter(number -> winningNumbers.numbers().contains(number))
+                .count();
     }
+
 }
