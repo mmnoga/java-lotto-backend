@@ -14,7 +14,8 @@ public class ResultCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
     private final NumberGeneratorFacade numberGeneratorFacade;
 
-    public ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade) {
+    public ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade,
+                               NumberGeneratorFacade numberGeneratorFacade) {
         this.numberReceiverFacade = numberReceiverFacade;
         this.numberGeneratorFacade = numberGeneratorFacade;
     }
@@ -23,12 +24,16 @@ public class ResultCheckerFacade {
     public List<PlayerResultDto> generateResults() {
         List<TicketDto> ticketsDto = numberReceiverFacade
                 .retrieveNumbersForNextDrawDate();
+        return addHitNumberForPlayersResult(
+                ticketsDto.stream()
+                        .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
+                        .toList());
+    }
+
+    private List<PlayerResultDto> addHitNumberForPlayersResult(List<PlayerResultDto> playersResultDto) {
         WinningNumbersDto winningNumbersDto = numberGeneratorFacade
                 .generateWonNumbersForNextDrawDate();
-        List<PlayerResultDto> playerResultDtos = ticketsDto.stream()
-                .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
-                .toList();
-        return playerResultDtos.stream()
+        return playersResultDto.stream()
                 .map(r -> PlayerResultDto.builder()
                         .drawDate(r.drawDate())
                         .playerNumbers(r.playerNumbers())
