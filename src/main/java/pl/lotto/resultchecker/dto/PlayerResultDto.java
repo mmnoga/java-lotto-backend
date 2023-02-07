@@ -7,6 +7,7 @@ import java.util.List;
 
 @Builder
 public record PlayerResultDto(
+        String ticketId,
         LocalDateTime drawDate,
         List<Integer> playerNumbers,
         int hitNumber

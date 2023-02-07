@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class ResultCheckerFacade {
 
+    private final int MIN_NUMBER_TO_WIN = 3;
+
     private final NumberReceiverFacade numberReceiverFacade;
     private final NumberGeneratorFacade numberGeneratorFacade;
 
@@ -22,31 +24,33 @@ public class ResultCheckerFacade {
 
     // add scheduler
     public List<PlayerResultDto> generateResults() {
-        List<TicketDto> ticketsDto = numberReceiverFacade
+        List<TicketDto> tickets = numberReceiverFacade
                 .retrieveNumbersForNextDrawDate();
-        return addHitNumberForPlayersResult(
-                ticketsDto.stream()
-                        .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
-                        .toList());
-    }
-
-    private List<PlayerResultDto> addHitNumberForPlayersResult(List<PlayerResultDto> playersResultDto) {
-        WinningNumbersDto winningNumbersDto = numberGeneratorFacade
+        WinningNumbersDto winningNumbers = numberGeneratorFacade
                 .generateWonNumbersForNextDrawDate();
-        return playersResultDto.stream()
-                .map(r -> PlayerResultDto.builder()
-                        .drawDate(r.drawDate())
-                        .playerNumbers(r.playerNumbers())
-                        .hitNumber(checkHitNumber(r.playerNumbers(), winningNumbersDto))
-                        .build())
-                .filter(r -> r.hitNumber() > 2)
+        return tickets.stream()
+                .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
+                .map(playerResult -> calculateHitNumber(playerResult, winningNumbers))
+                .filter(playerResult -> playerResult.hitNumber() >= MIN_NUMBER_TO_WIN)
                 .collect(Collectors.toList());
     }
 
-    private int checkHitNumber(List<Integer> userNumbers, WinningNumbersDto winningNumbers) {
-        return (int) userNumbers.stream()
+    private PlayerResultDto calculateHitNumber(PlayerResultDto playerResult, WinningNumbersDto winningNumbers) {
+        int hitNumber = (int) playerResult.playerNumbers().stream()
                 .filter(number -> winningNumbers.numbers().contains(number))
                 .count();
+        return PlayerResultDto.builder()
+                .hitNumber(hitNumber)
+                .ticketId(playerResult.ticketId())
+                .drawDate(playerResult.drawDate())
+                .playerNumbers(playerResult.playerNumbers())
+                .build();
+    }
+
+    public boolean checkWinner(String lotteryId) {
+        List<PlayerResultDto> playersResultDto = generateResults();
+        return playersResultDto.stream()
+                .anyMatch(r -> r.ticketId().equals(lotteryId));
     }
 
 }

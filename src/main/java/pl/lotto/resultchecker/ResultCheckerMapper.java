@@ -11,6 +11,7 @@ class ResultCheckerMapper {
 
     public static PlayerResultDto mapTicketDtoToPlayerResultDto(TicketDto ticketDto){
         return PlayerResultDto.builder()
+                .ticketId(ticketDto.lotteryId())
                 .playerNumbers(ticketDto.numbers())
                 .drawDate(ticketDto.drawDate())
                 .build();
