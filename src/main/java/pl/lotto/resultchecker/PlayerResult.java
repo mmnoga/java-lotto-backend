@@ -1,4 +1,4 @@
-package pl.lotto.resultchecker.dto;
+package pl.lotto.resultchecker;
 
 import lombok.Builder;
 
@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record PlayerResultDto(
+record PlayerResult(
         String ticketId,
         LocalDateTime drawDate,
-        List<Integer> playerNumbers,
+        List<Integer> userNumbers,
         List<Integer> winningNumbers,
         int hitNumber
 ) {

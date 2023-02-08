@@ -23,7 +23,7 @@ public class NumberReceiverFacadeTest {
     private final NumberReceiverConfiguration numberReceiverFacade = new NumberReceiverConfiguration();
 
     @Test
-    @DisplayName("Should return valid ticket when user gave six correct numbers")
+    @DisplayName("Should return valid ticket when user gave six correct userNumbers")
     public void should_return_valid_ticket_when_user_gave_six_correct_numbers() {
         // given
         NumberReceiverFacade numberReceiver = numberReceiverFacade.createdForTest(date,numberReceiverRepository);
@@ -34,7 +34,7 @@ public class NumberReceiverFacadeTest {
     }
 
     @Test
-    @DisplayName("Should return valid ticket with no error message when user gave six correct numbers")
+    @DisplayName("Should return valid ticket with no error message when user gave six correct userNumbers")
     public void should_return_valid_ticket_with_no_error_message_when_user_gave_six_correct_numbers() {
         // given
         NumberReceiverFacade numberReceiver = numberReceiverFacade.createdForTest(date,numberReceiverRepository);
@@ -92,7 +92,7 @@ public class NumberReceiverFacadeTest {
     }
 
     @Test
-    @DisplayName("Should return invalid ticket when user gave less than six numbers")
+    @DisplayName("Should return invalid ticket when user gave less than six userNumbers")
     public void should_return_invalid_ticket_when_user_gave_less_than_six_numbers() {
         // given
         NumberReceiverFacade numberReceiver = numberReceiverFacade.createdForTest(date,numberReceiverRepository);
@@ -103,7 +103,7 @@ public class NumberReceiverFacadeTest {
     }
 
     @Test
-    @DisplayName("Should return invalid ticket when user gave more than six numbers")
+    @DisplayName("Should return invalid ticket when user gave more than six userNumbers")
     public void should_return_invalid_ticket_when_user_gave_more_than_six_numbers() {
         // given
         NumberReceiverFacade numberReceiver = numberReceiverFacade.createdForTest(date,numberReceiverRepository);
@@ -226,7 +226,7 @@ public class NumberReceiverFacadeTest {
     }
 
     private TicketEntity mapTicket(TicketDto ticket) {
-        return new TicketEntity(ticket.lotteryId(), ticket.numbers(), ticket.drawDate());
+        return new TicketEntity(ticket.lotteryId(), ticket.userNumbers(), ticket.drawDate());
     }
 
 }

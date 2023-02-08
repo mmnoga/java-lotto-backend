@@ -24,7 +24,7 @@ public class NumberGeneratorFacade {
         WinningNumbers winningNumbers = numbersGeneratorRepository
                 .findWinningNumbersByDrawDate(date.drawDate())
                 .orElseThrow(() ->
-                        new RuntimeException("Not found winning numbers for drawing date"));
+                        new RuntimeException("Not found winning userNumbers for drawing date"));
         return WinningNumbersMapper
                 .mapFromWinningNumbersToWinningNumbersDto(
                         winningNumbers);

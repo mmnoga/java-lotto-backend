@@ -7,50 +7,55 @@ import pl.lotto.winningnumbergenerator.NumberGeneratorFacade;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ResultCheckerFacade {
 
     private final int MIN_NUMBER_TO_WIN = 3;
-
     private final NumberReceiverFacade numberReceiverFacade;
     private final NumberGeneratorFacade numberGeneratorFacade;
+    private final HitNumberCalculator hitNumberCalculator;
+    private final PlayerResultRepository playerResultRepository;
 
     public ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade,
-                               NumberGeneratorFacade numberGeneratorFacade) {
+                               NumberGeneratorFacade numberGeneratorFacade,
+                               HitNumberCalculator hitNumberCalculator,
+                               PlayerResultRepository playerResultRepository) {
         this.numberReceiverFacade = numberReceiverFacade;
         this.numberGeneratorFacade = numberGeneratorFacade;
+        this.hitNumberCalculator = hitNumberCalculator;
+        this.playerResultRepository = playerResultRepository;
     }
 
     // add scheduler
     public List<PlayerResultDto> generateResults() {
-        List<TicketDto> tickets = numberReceiverFacade
-                .retrieveNumbersForNextDrawDate();
-        WinningNumbersDto winningNumbers = numberGeneratorFacade
-                .generateWonNumbersForNextDrawDate();
-        return tickets.stream()
-                .map(ResultCheckerMapper::mapTicketDtoToPlayerResultDto)
-                .map(playerResult -> calculateHitNumber(playerResult, winningNumbers))
-                .filter(playerResult -> playerResult.hitNumber() >= MIN_NUMBER_TO_WIN)
-                .collect(Collectors.toList());
+        List<TicketDto> ticketsResponseDto = numberReceiverFacade.retrieveNumbersForNextDrawDate();
+        WinningNumbersDto winningNumbersResponseDto = numberGeneratorFacade.generateWonNumbersForNextDrawDate();
+        List<Integer> winningNumbers = winningNumbersResponseDto.numbers();
+        List<Ticket> tickets = ResultCheckerMapper.mapTicketsDtoToTicket(ticketsResponseDto);
+        List<PlayerResult> playersResult = tickets.stream()
+                .map(ticket -> hitNumberCalculator.calculateHitNumber(ticket, winningNumbers))
+                .toList();
+        List<PlayerResult> savedPlayerResults = playerResultRepository.saveAll(playersResult);
+        return ResultCheckerMapper.mapPlayersResultToPlayersResultDto(savedPlayerResults);
     }
 
-    private PlayerResultDto calculateHitNumber(PlayerResultDto playerResult, WinningNumbersDto winningNumbers) {
-        int hitNumber = (int) playerResult.playerNumbers().stream()
-                .filter(number -> winningNumbers.numbers().contains(number))
-                .count();
-        return PlayerResultDto.builder()
-                .hitNumber(hitNumber)
-                .ticketId(playerResult.ticketId())
-                .drawDate(playerResult.drawDate())
-                .playerNumbers(playerResult.playerNumbers())
-                .build();
+    public List<PlayerResultDto> retrieveWonTickets() {
+        List<PlayerResult> tickets = playerResultRepository.findAll();
+        return ResultCheckerMapper.mapPlayersResultToPlayersResultDto(tickets.stream()
+                .filter(r -> r.hitNumber() >= MIN_NUMBER_TO_WIN)
+                .collect(Collectors.toList()));
     }
 
-    public boolean checkWinner(String lotteryId) {
-        List<PlayerResultDto> playersResultDto = generateResults();
-        return playersResultDto.stream()
-                .anyMatch(r -> r.ticketId().equals(lotteryId));
+    public Optional<PlayerResultDto> checkWinner(String lotteryId) {
+        PlayerResult ticket = playerResultRepository
+                .findById(lotteryId)
+                .orElseThrow(() ->
+                        new RuntimeException("Ticket not found"));
+        return ticket.hitNumber() >= MIN_NUMBER_TO_WIN ?
+                Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket)) :
+                Optional.empty();
     }
 
 }

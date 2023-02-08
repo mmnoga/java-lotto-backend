@@ -24,7 +24,7 @@ public class NumberGeneratorFacadeMockitoTest {
             new NumberGeneratorConfiguration();
 
     @Test
-    @DisplayName("Should return winning numbers for draw date when winning numbers was generated for that date")
+    @DisplayName("Should return winning userNumbers for draw date when winning userNumbers was generated for that date")
     void should_return_winning_numbers_for_draw_date_when_winning_numbers_was_generated_for_that_date() {
         // given
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 7, 12, 0);
@@ -54,7 +54,7 @@ public class NumberGeneratorFacadeMockitoTest {
     }
 
     @Test
-    @DisplayName("Should throw runtime exception when winning numbers was not generated for given date")
+    @DisplayName("Should throw runtime exception when winning userNumbers was not generated for given date")
     void should_throw_runtime_exception_when_winning_numbers_was_not_generated_for_given_date() {
         // given
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 7, 12, 0);
@@ -65,7 +65,7 @@ public class NumberGeneratorFacadeMockitoTest {
         NumberGeneratorRepository numberGeneratorRepository = mock(NumberGeneratorRepository.class);
         when(numberGeneratorRepository
                 .findWinningNumbersByDrawDate(drawDate))
-                .thenThrow(new RuntimeException("Not found winning numbers for drawing date"));
+                .thenThrow(new RuntimeException("Not found winning userNumbers for drawing date"));
         numberGeneratorFacade =
                 numberGeneratorConfiguration.createdForTest(
                         null,
@@ -76,11 +76,11 @@ public class NumberGeneratorFacadeMockitoTest {
                 RuntimeException.class,
                 () -> numberGeneratorFacade.retrieveWonNumbersForDate(drawDateDto));
         // then
-        assertEquals("Not found winning numbers for drawing date", exception.getMessage());
+        assertEquals("Not found winning userNumbers for drawing date", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Should return six different winning numbers in range from 1 to 99 when generation went correct")
+    @DisplayName("Should return six different winning userNumbers in range from 1 to 99 when generation went correct")
     void should_return_six_different_winning_numbers_in_range_from_1_to_99_when_generation_went_correct() {
         // given
         LocalDateTime drawDate = LocalDateTime.of(2023, 1, 7, 12, 0);

@@ -9,7 +9,7 @@ class TicketMapper {
 
     public static TicketDto mapFromTicketEntityToTicketDto(TicketEntity ticket) {
         return TicketDto.builder()
-                .numbers(ticket.numbers())
+                .userNumbers(ticket.numbers())
                 .drawDate(ticket.drawDate())
                 .lotteryId(ticket.lotteryId())
                 .isValid(true)

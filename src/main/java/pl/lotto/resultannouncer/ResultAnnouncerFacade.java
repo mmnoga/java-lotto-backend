@@ -1,6 +1,7 @@
 package pl.lotto.resultannouncer;
 
 import pl.lotto.resultchecker.ResultCheckerFacade;
+import pl.lotto.resultchecker.dto.PlayerResultDto;
 
 public class ResultAnnouncerFacade {
 
@@ -10,8 +11,9 @@ public class ResultAnnouncerFacade {
         this.resultCheckerFacade = resultCheckerFacade;
     }
 
-    public boolean checkWinner(String uniqueLotteryId) {
-        return resultCheckerFacade.checkWinner(uniqueLotteryId);
+    public PlayerResultDto checkWinner(String uniqueLotteryId) {
+        return null;
+                //resultCheckerFacade.checkWinner(uniqueLotteryId);
     }
 
 }
