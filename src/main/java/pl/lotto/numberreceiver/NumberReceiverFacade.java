@@ -16,11 +16,12 @@ public class NumberReceiverFacade {
     private final DrawDateGenerator drawDateGenerator;
     private final TicketIdGenerator ticketIdGenerator;
 
-    NumberReceiverFacade(Clock clock,
-                         NumberReceiverRepository numberReceiverRepository,
-                         NumberValidator numberValidator,
-                         DrawDateGenerator drawDateGenerator,
-                         TicketIdGenerator ticketIdGenerator) {
+    NumberReceiverFacade(
+            Clock clock,
+            NumberReceiverRepository numberReceiverRepository,
+            NumberValidator numberValidator,
+            DrawDateGenerator drawDateGenerator,
+            TicketIdGenerator ticketIdGenerator) {
         this.clock = clock;
         this.numberReceiverRepository = numberReceiverRepository;
         this.numberValidator = numberValidator;

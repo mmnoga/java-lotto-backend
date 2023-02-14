@@ -1,7 +1,10 @@
 package pl.lotto.resultannouncer;
 
+import pl.lotto.resultannouncer.dto.ResultDto;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.resultchecker.dto.PlayerResultDto;
+
+import java.util.Optional;
 
 public class ResultAnnouncerFacade {
 
@@ -11,9 +14,11 @@ public class ResultAnnouncerFacade {
         this.resultCheckerFacade = resultCheckerFacade;
     }
 
-    public PlayerResultDto checkWinner(String uniqueLotteryId) {
-        return null;
-                //resultCheckerFacade.checkWinner(uniqueLotteryId);
+    public Optional<ResultDto> checkWinner(String uniqueLotteryId) {
+        PlayerResultDto ticket = resultCheckerFacade.checkWinner(uniqueLotteryId)
+                .orElseThrow(() ->
+                        new RuntimeException("Ticket not found"));
+        return Optional.ofNullable(ResultAnnouncerMapper.mapPlayerResultDtoToResultDto(ticket));
     }
 
 }
