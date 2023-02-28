@@ -1,7 +1,8 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.infrastructure.controller.numberreceiver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 import java.util.List;

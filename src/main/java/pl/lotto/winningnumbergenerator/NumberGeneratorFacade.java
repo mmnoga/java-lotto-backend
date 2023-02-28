@@ -5,6 +5,7 @@ import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public class NumberGeneratorFacade {
 
@@ -20,17 +21,18 @@ public class NumberGeneratorFacade {
         this.numbersGenerator = numbersGenerator;
     }
 
-    public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
+    public Optional<WinningNumbersDto> retrieveWonNumbersForDate(DrawDateDto date) {
         WinningNumbers winningNumbers = numbersGeneratorRepository
                 .findWinningNumbersByDrawDate(date.drawDate())
                 .orElseThrow(() ->
                         new RuntimeException("Not found winning userNumbers for drawing date"));
-        return WinningNumbersMapper
+        return Optional.ofNullable(WinningNumbersMapper
                 .mapFromWinningNumbersToWinningNumbersDto(
-                        winningNumbers);
+                        winningNumbers));
     }
 
     //add scheduler...
+    //obsługa wyjątków x 2
     public WinningNumbersDto generateWonNumbersForNextDrawDate() {
         DrawDateDto drawDateDto = numberReceiverFacade.retrieveNextDrawDate();
         List<Integer> numbers = numbersGenerator.generateRandomNumbers();
