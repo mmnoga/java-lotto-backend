@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface NumberReceiverRepository extends MongoRepository<TicketEntity, String> {
 
-    TicketEntity save(TicketEntity ticket);
+//    TicketEntity save(TicketEntity ticket);
 
     List<TicketEntity> findAll();
 
