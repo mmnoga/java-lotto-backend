@@ -1,7 +1,10 @@
 package pl.lotto.infrastructure.controller.numberreceiver;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
@@ -9,14 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "inputNumbers")
+@AllArgsConstructor
 public class NumberReceiverController {
 
     private final NumberReceiverFacade numberReceiverFacade;
-
-    @Autowired
-    public NumberReceiverController(NumberReceiverFacade numberReceiverFacade) {
-        this.numberReceiverFacade = numberReceiverFacade;
-    }
 
     @PostMapping
     public TicketDto inputNumbers(@RequestParam List<Integer> numbers) {

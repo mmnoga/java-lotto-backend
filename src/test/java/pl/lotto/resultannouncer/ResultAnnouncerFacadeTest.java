@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.resultannouncer.dto.ResultDto;
 import pl.lotto.resultchecker.ResultCheckerConfiguration;
 import pl.lotto.resultchecker.ResultCheckerFacade;
+import pl.lotto.resultchecker.dto.PlayerResultDto;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;

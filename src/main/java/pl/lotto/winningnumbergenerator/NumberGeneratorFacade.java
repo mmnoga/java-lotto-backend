@@ -25,14 +25,12 @@ public class NumberGeneratorFacade {
         WinningNumbers winningNumbers = numbersGeneratorRepository
                 .findWinningNumbersByDrawDate(date.drawDate())
                 .orElseThrow(() ->
-                        new RuntimeException("Not found winning userNumbers for drawing date"));
+                        new RuntimeException("Not found winning numbers for drawing date"));
         return Optional.ofNullable(WinningNumbersMapper
                 .mapFromWinningNumbersToWinningNumbersDto(
                         winningNumbers));
     }
 
-    //add scheduler...
-    //obsługa wyjątków x 2
     public WinningNumbersDto generateWonNumbersForNextDrawDate() {
         DrawDateDto drawDateDto = numberReceiverFacade.retrieveNextDrawDate();
         List<Integer> numbers = numbersGenerator.generateRandomNumbers();

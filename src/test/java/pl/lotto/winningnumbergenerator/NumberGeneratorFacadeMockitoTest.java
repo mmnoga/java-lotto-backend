@@ -34,7 +34,7 @@ public class NumberGeneratorFacadeMockitoTest {
         when(drawDateForResult.drawDate()).thenReturn(drawDate);
 
         WinningNumbers winningNumbers = mock(WinningNumbers.class);
-        when(winningNumbers.numbers()).thenReturn(numbers);
+        when(winningNumbers.number()).thenReturn(numbers);
 
         NumberGeneratorRepository numberGeneratorRepository = mock(NumberGeneratorRepository.class);
         when(numberGeneratorRepository
@@ -48,9 +48,9 @@ public class NumberGeneratorFacadeMockitoTest {
                         null
                 );
         // when
-        WinningNumbersDto result = numberGeneratorFacade.retrieveWonNumbersForDate(drawDateForResult);
+        Optional<WinningNumbersDto> result = numberGeneratorFacade.retrieveWonNumbersForDate(drawDateForResult);
         // then
-        assertEquals(result.numbers(), numbers);
+        assertEquals(result.get().numbers(), numbers);
     }
 
     @Test

@@ -22,12 +22,16 @@ public class NumberGeneratorScheduler {
         this.numberReceiverFacade = numberReceiverFacade;
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/20 * * * * *")
     void generateWinningNumbers() {
         DrawDateDto nextDrawDate = numberReceiverFacade.retrieveNextDrawDate();
-        Optional<WinningNumbersDto> winningNumbersDto = numberGeneratorFacade.retrieveWonNumbersForDate(nextDrawDate);
-        if (winningNumbersDto.isPresent()) {
-            throw new IllegalStateException("winning numbers have already generated");
+        try {
+            Optional<WinningNumbersDto> winningNumbersDto = numberGeneratorFacade.retrieveWonNumbersForDate(nextDrawDate);
+            if (winningNumbersDto.isPresent()) {
+                throw new IllegalStateException("winning numbers have already generated");
+            }
+        } catch (Exception e) {
+            new IllegalStateException("no numbers found for drawing date");
         }
         numberGeneratorFacade.generateWonNumbersForNextDrawDate();
     }

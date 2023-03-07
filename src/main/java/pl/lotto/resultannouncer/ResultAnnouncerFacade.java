@@ -15,6 +15,7 @@ public class ResultAnnouncerFacade {
     }
 
     public Optional<ResultDto> checkWinner(String uniqueLotteryId) {
+        System.out.println("checking in checkWinner at ResultAnnouncerFacade");
         PlayerResultDto ticket = resultCheckerFacade.checkWinner(uniqueLotteryId)
                 .orElseThrow(() ->
                         new RuntimeException("Ticket not found"));
