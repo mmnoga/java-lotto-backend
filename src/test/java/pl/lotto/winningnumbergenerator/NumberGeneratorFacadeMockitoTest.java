@@ -48,9 +48,9 @@ public class NumberGeneratorFacadeMockitoTest {
                         null
                 );
         // when
-        Optional<WinningNumbersDto> result = numberGeneratorFacade.retrieveWonNumbersForDate(drawDateForResult);
+        WinningNumbersDto result = numberGeneratorFacade.retrieveWonNumbersForDate(drawDateForResult);
         // then
-        assertEquals(result.get().numbers(), numbers);
+        assertEquals(result.numbers(), numbers);
     }
 
     @Test

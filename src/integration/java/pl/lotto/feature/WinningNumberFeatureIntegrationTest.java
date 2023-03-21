@@ -1,7 +1,9 @@
 package pl.lotto.feature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,7 +18,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.lotto.LottoApplication;
+import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.winningnumbergenerator.NotFoundWinningNumbersException;
+import pl.lotto.winningnumbergenerator.NumberGeneratorFacade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +37,9 @@ public class WinningNumberFeatureIntegrationTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    NumberGeneratorFacade numberGeneratorFacade;
 
     @Container
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
@@ -56,8 +64,18 @@ public class WinningNumberFeatureIntegrationTest {
 
         // step 2: winning numbers were generated
         // given
-        // when
-        // then
+        DrawDateDto dateDto = new DrawDateDto(drawDate);
+        // when && then
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(20))
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> {
+                    try {
+                        return !numberGeneratorFacade.retrieveWonNumbersForDate(dateDto).numbers().isEmpty();
+                    } catch (NotFoundWinningNumbersException exception) {
+                        return false;
+                    }
+                });
 
         // step 3: results were checked
         // given

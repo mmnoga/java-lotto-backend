@@ -1,11 +1,10 @@
 package pl.lotto.winningnumbergenerator;
 
+import java.util.List;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
-
-import java.util.List;
-import java.util.Optional;
+import static pl.lotto.winningnumbergenerator.WinningNumbersMapper.mapFromWinningNumbersToWinningNumbersDto;
 
 public class NumberGeneratorFacade {
 
@@ -21,23 +20,23 @@ public class NumberGeneratorFacade {
         this.numbersGenerator = numbersGenerator;
     }
 
-    public Optional<WinningNumbersDto> retrieveWonNumbersForDate(DrawDateDto date) {
+    public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
         WinningNumbers winningNumbers = numbersGeneratorRepository
                 .findWinningNumbersByDrawDate(date.drawDate())
-                .orElseThrow(() ->
-                        new RuntimeException("Not found winning numbers for drawing date"));
-        return Optional.ofNullable(WinningNumbersMapper
-                .mapFromWinningNumbersToWinningNumbersDto(
-                        winningNumbers));
+                .orElseThrow(() -> new NotFoundWinningNumbersException("Not found winning numbers for drawing date"));
+        return mapFromWinningNumbersToWinningNumbersDto(winningNumbers);
     }
 
     public WinningNumbersDto generateWonNumbersForNextDrawDate() {
         DrawDateDto drawDateDto = numberReceiverFacade.retrieveNextDrawDate();
-        List<Integer> numbers = numbersGenerator.generateRandomNumbers();
-        WinningNumbers save = numbersGeneratorRepository
-                .save(new WinningNumbers(drawDateDto.drawDate(), numbers));
-        return WinningNumbersMapper
-                .mapFromWinningNumbersToWinningNumbersDto(save);
+        try {
+            WinningNumbersDto winningNumbersDto = retrieveWonNumbersForDate(drawDateDto);
+            return mapFromWinningNumbersToWinningNumbersDto(new WinningNumbers(winningNumbersDto.drawDate(), winningNumbersDto.numbers()));
+        } catch (NotFoundWinningNumbersException runtimeException) {
+            List<Integer> numbers = numbersGenerator.generateRandomNumbers();
+            WinningNumbers save = numbersGeneratorRepository
+                    .save(new WinningNumbers(drawDateDto.drawDate(), numbers));
+            return mapFromWinningNumbersToWinningNumbersDto(save);
+        }
     }
-
 }
