@@ -1,5 +1,6 @@
 package pl.lotto.infrastructure.controller.resultannouncer;
 
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.lotto.resultannouncer.ResultAnnouncerFacade;
 import pl.lotto.resultannouncer.dto.ResultDto;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(path = "winners")
 @AllArgsConstructor
@@ -21,13 +20,10 @@ public class ResultAnnouncerController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ResultDto> checkWinner(@PathVariable("id") String id) {
-        try {
-            System.out.println(".... "+resultAnnouncerFacade.checkWinner(id));
-            Optional<ResultDto> resultDto = resultAnnouncerFacade.checkWinner(id);
-            return new ResponseEntity<>(resultDto.get(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
+        Optional<ResultDto> resultDto1 = resultAnnouncerFacade.checkWinner(id);
+        System.out.println(".... " + resultDto1);
+        Optional<ResultDto> resultDto = resultDto1;
+        return new ResponseEntity<>(resultDto.get(), HttpStatus.OK);
     }
 
 }

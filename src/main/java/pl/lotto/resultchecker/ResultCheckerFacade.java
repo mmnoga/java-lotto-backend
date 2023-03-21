@@ -49,6 +49,8 @@ public class ResultCheckerFacade {
     }
 
     public Optional<PlayerResultDto> checkWinner(String lotteryId) {
+        // isAfterDrawDate?
+
         PlayerResult ticket = playerResultRepository
                 .findById(lotteryId)
                 .orElseThrow(() ->
