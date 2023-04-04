@@ -6,6 +6,7 @@ import pl.lotto.resultchecker.dto.PlayerResultDto;
 import pl.lotto.winningnumbergenerator.NumberGeneratorFacade;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +29,6 @@ public class ResultCheckerFacade {
         this.playerResultRepository = playerResultRepository;
     }
 
-    // add scheduler
     public List<PlayerResultDto> generateResults() {
         List<TicketDto> ticketsResponseDto = numberReceiverFacade.retrieveNumbersForNextDrawDate();
         WinningNumbersDto winningNumbersResponseDto = numberGeneratorFacade.generateWonNumbersForNextDrawDate();
@@ -49,15 +49,21 @@ public class ResultCheckerFacade {
     }
 
     public Optional<PlayerResultDto> checkWinner(String lotteryId) {
-        // isAfterDrawDate?
 
+        // isAfterDrawDate?
         PlayerResult ticket = playerResultRepository
                 .findById(lotteryId)
                 .orElseThrow(() ->
                         new RuntimeException("Ticket not found"));
-        return ticket.hitNumber() >= MIN_NUMBER_TO_WIN ?
-                Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket)) :
-                Optional.empty();
+
+        if (ticket.drawDate().isAfter(LocalDateTime.now())) {
+            throw new RuntimeException("Numbers have not been drawn yet");
+        }
+        return Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket));
+
+//        return ticket.hitNumber() >= MIN_NUMBER_TO_WIN ?
+//                Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket)) :
+//                Optional.empty();
     }
 
 }

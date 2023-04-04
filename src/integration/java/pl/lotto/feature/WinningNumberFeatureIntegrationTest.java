@@ -1,8 +1,6 @@
 package pl.lotto.feature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +18,17 @@ import org.testcontainers.utility.DockerImageName;
 import pl.lotto.LottoApplication;
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.resultannouncer.dto.ResultDto;
+import pl.lotto.resultchecker.NotGeneratedResultsException;
+import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.winningnumbergenerator.NotFoundWinningNumbersException;
 import pl.lotto.winningnumbergenerator.NumberGeneratorFacade;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,6 +46,8 @@ public class WinningNumberFeatureIntegrationTest {
 
     @Autowired
     NumberGeneratorFacade numberGeneratorFacade;
+    @Autowired
+    ResultCheckerFacade resultCheckerFacade;
 
     @Container
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
@@ -54,10 +62,10 @@ public class WinningNumberFeatureIntegrationTest {
         // step 1: user gave numbers and got response 201 CREATED
         // given
         // when
-        ResultActions perform = mockMvc.perform(post("/inputNumbers?numbers=1,2,3,4,5,6"));
+        ResultActions response = mockMvc.perform(post("/inputNumbers?numbers=1,2,3,4,5,6"));
         // then
-        perform.andExpect(status().isCreated());
-        String json = perform.andReturn().getResponse().getContentAsString();
+        response.andExpect(status().isCreated());
+        String json = response.andReturn().getResponse().getContentAsString();
         TicketDto ticketDto = objectMapper.readValue(json, TicketDto.class);
         LocalDateTime drawDate = ticketDto.drawDate();
         assertThat(drawDate).isNotNull();
@@ -81,10 +89,28 @@ public class WinningNumberFeatureIntegrationTest {
         // given
         // when
         // then
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(20))
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> {
+                    try {
+                        return !resultCheckerFacade.generateResults().isEmpty();
+                    } catch (NotGeneratedResultsException exception) {
+                        return false;
+                    }
+                });
 
         // step 4: user checked if won and got 200 OK
         // given
         // when
+        String ticketId = ticketDto.lotteryId();
+        ResultActions responseCheckWinning = mockMvc.perform(get("/winners/" + ticketId));
         // then
+        responseCheckWinning.andExpect(status().isCreated());
+        String jsonCheckWinning = responseCheckWinning.andReturn().getResponse().getContentAsString();
+        ResultDto resultDto = objectMapper.readValue(jsonCheckWinning, ResultDto.class);
+        assertThat(resultDto.ticketId()).isEqualTo(ticketId);
+        assertThat(resultDto.hitNumber()).isEqualTo(6);
     }
+
 }
