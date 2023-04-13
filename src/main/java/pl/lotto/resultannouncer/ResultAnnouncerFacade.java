@@ -14,12 +14,11 @@ public class ResultAnnouncerFacade {
         this.resultCheckerFacade = resultCheckerFacade;
     }
 
-    public Optional<ResultDto> checkWinner(String uniqueLotteryId) {
+    public ResultDto checkWinner(String uniqueLotteryId) {
 
-        PlayerResultDto ticket = resultCheckerFacade.checkWinner(uniqueLotteryId)
-                .orElseThrow(() ->
-                        new RuntimeException("Ticket not found"));
-        return Optional.ofNullable(ResultAnnouncerMapper.mapPlayerResultDtoToResultDto(ticket));
+        PlayerResultDto ticket = resultCheckerFacade.checkWinner(uniqueLotteryId);
+
+        return ResultAnnouncerMapper.mapPlayerResultDtoToResultDto(ticket);
     }
 
 }

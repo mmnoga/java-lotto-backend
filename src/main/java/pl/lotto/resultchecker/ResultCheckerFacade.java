@@ -1,5 +1,6 @@
 package pl.lotto.resultchecker;
 
+import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.dto.PlayerResultDto;
@@ -10,24 +11,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@AllArgsConstructor
 public class ResultCheckerFacade {
-
     private final int MIN_NUMBER_TO_WIN = 3;
     private final NumberReceiverFacade numberReceiverFacade;
     private final NumberGeneratorFacade numberGeneratorFacade;
     private final HitNumberCalculator hitNumberCalculator;
     private final PlayerResultRepository playerResultRepository;
-
-    public ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade,
-                               NumberGeneratorFacade numberGeneratorFacade,
-                               HitNumberCalculator hitNumberCalculator,
-                               PlayerResultRepository playerResultRepository) {
-        this.numberReceiverFacade = numberReceiverFacade;
-        this.numberGeneratorFacade = numberGeneratorFacade;
-        this.hitNumberCalculator = hitNumberCalculator;
-        this.playerResultRepository = playerResultRepository;
-    }
 
     public List<PlayerResultDto> generateResults() {
         List<TicketDto> ticketsResponseDto = numberReceiverFacade.retrieveNumbersForNextDrawDate();
@@ -48,22 +38,15 @@ public class ResultCheckerFacade {
                 .collect(Collectors.toList()));
     }
 
-    public Optional<PlayerResultDto> checkWinner(String lotteryId) {
+    public PlayerResultDto checkWinner(String lotteryId) {
 
-        // isAfterDrawDate?
         PlayerResult ticket = playerResultRepository
                 .findById(lotteryId)
                 .orElseThrow(() ->
-                        new RuntimeException("Ticket not found"));
+                        new TicketNotFoundException("Ticket not found or numbers have not been drawn yet"));
 
-        if (ticket.drawDate().isAfter(LocalDateTime.now())) {
-            throw new RuntimeException("Numbers have not been drawn yet");
-        }
-        return Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket));
+        return ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket);
 
-//        return ticket.hitNumber() >= MIN_NUMBER_TO_WIN ?
-//                Optional.ofNullable(ResultCheckerMapper.mapPlayerResultToPlayersResultDto(ticket)) :
-//                Optional.empty();
     }
 
 }

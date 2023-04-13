@@ -2,7 +2,7 @@ package pl.lotto.winningnumbergenerator;
 
 import java.util.List;
 
-public class InMemoryNumbersGeneratorTestImpl extends NumbersGenerator implements NumbersGeneratorInterface {
+public class InMemoryNumbersGeneratorTestImpl implements NumbersGeneratorInterface {
 
     private final List<Integer> numbers;
 

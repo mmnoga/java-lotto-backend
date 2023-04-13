@@ -16,8 +16,8 @@ public class ResultAnnouncerController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ResultDto> checkWinner(@PathVariable("id") String id) {
-        Optional<ResultDto> resultDto = resultAnnouncerFacade.checkWinner(id);
-        return new ResponseEntity<>(resultDto.get(), HttpStatus.BAD_REQUEST);
+        ResultDto resultDto = resultAnnouncerFacade.checkWinner(id);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
 }

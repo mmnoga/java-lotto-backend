@@ -16,9 +16,14 @@ public class NumberGeneratorConfiguration {
 
     @Bean
     public NumberGeneratorFacade numberGeneratorFacade(NumberReceiverFacade numberReceiverFacade,
-                                                       NumberGeneratorRepository numberGeneratorRepository) {
-        NumbersGeneratorInterface numbersGeneratorInterface = new NumbersGenerator();
+                                                       NumberGeneratorRepository numberGeneratorRepository,
+                                                       NumbersGeneratorInterface numbersGeneratorInterface) {
         return new NumberGeneratorFacade(numberGeneratorRepository, numberReceiverFacade, numbersGeneratorInterface);
+    }
+
+    @Bean
+    public NumbersGeneratorInterface numbersGeneratorInterface() {
+        return new NumbersGenerator();
     }
 
 }
