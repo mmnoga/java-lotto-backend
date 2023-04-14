@@ -1,24 +1,19 @@
 package pl.lotto.winningnumbergenerator;
 
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 import static pl.lotto.winningnumbergenerator.WinningNumbersMapper.mapFromWinningNumbersToWinningNumbersDto;
 
+@AllArgsConstructor
 public class NumberGeneratorFacade {
 
     private final NumberGeneratorRepository numbersGeneratorRepository;
     private final NumberReceiverFacade numberReceiverFacade;
     private final NumbersGeneratorInterface numbersGenerator;
-
-    public NumberGeneratorFacade(NumberGeneratorRepository numbersGeneratorRepository,
-                                 NumberReceiverFacade numberReceiverFacade,
-                                 NumbersGeneratorInterface numbersGenerator) {
-        this.numbersGeneratorRepository = numbersGeneratorRepository;
-        this.numberReceiverFacade = numberReceiverFacade;
-        this.numbersGenerator = numbersGenerator;
-    }
 
     public WinningNumbersDto retrieveWonNumbersForDate(DrawDateDto date) {
         WinningNumbers winningNumbers = numbersGeneratorRepository

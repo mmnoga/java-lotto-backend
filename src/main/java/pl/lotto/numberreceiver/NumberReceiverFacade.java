@@ -1,5 +1,6 @@
 package pl.lotto.numberreceiver;
 
+import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
@@ -7,7 +8,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@AllArgsConstructor
 public class NumberReceiverFacade {
 
     private final Clock clock;
@@ -15,19 +16,6 @@ public class NumberReceiverFacade {
     private final NumberValidator numberValidator;
     private final DrawDateGenerator drawDateGenerator;
     private final TicketIdGenerator ticketIdGenerator;
-
-    NumberReceiverFacade(
-            Clock clock,
-            NumberReceiverRepository numberReceiverRepository,
-            NumberValidator numberValidator,
-            DrawDateGenerator drawDateGenerator,
-            TicketIdGenerator ticketIdGenerator) {
-        this.clock = clock;
-        this.numberReceiverRepository = numberReceiverRepository;
-        this.numberValidator = numberValidator;
-        this.drawDateGenerator = drawDateGenerator;
-        this.ticketIdGenerator = ticketIdGenerator;
-    }
 
     public TicketDto inputNumbers(List<Integer> userNumbers) {
         ValidationResult validationResult = numberValidator.validate(userNumbers);
