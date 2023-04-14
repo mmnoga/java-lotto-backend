@@ -1,6 +1,9 @@
 package pl.lotto.infrastructure.controller.numberreceiver;
 
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,8 @@ public class NumberReceiverController {
     private final NumberReceiverFacade numberReceiverFacade;
 
     @PostMapping
-    public ResponseEntity<TicketDto> inputNumbers(@RequestParam List<Integer> numbers) {
+    @Operation(summary = "Create user ticket")
+    public ResponseEntity<TicketDto> inputNumbers(@Parameter(description = "6 different numbers in range from 1 to 99") @RequestParam List<Integer> numbers) {
         TicketDto ticketDto = numberReceiverFacade.inputNumbers(numbers);
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketDto);
     }
