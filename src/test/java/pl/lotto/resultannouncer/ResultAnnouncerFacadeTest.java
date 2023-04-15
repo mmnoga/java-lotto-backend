@@ -21,7 +21,6 @@ class ResultAnnouncerFacadeTest {
     private final ResultAnnouncerConfiguration resultAnnouncerConfiguration = new ResultAnnouncerConfiguration();
 
     @Test
-    @DisplayName("")
     void should_return_result_for_valid_ticket_id() {
         // given
         String uniqueLotteryId = "ticket_id1";
