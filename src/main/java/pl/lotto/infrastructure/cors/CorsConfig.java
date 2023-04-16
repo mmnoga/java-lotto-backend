@@ -14,22 +14,12 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("*")
-                        .allowedOrigins("http://localhost:8080");
+                        .allowedOrigins("http://localhost")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
-
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:3000","http://localhost:8080","http://localhost:8000")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowedHeaders("*")
-//                        .allowCredentials(true)
-//                        .maxAge(3600);
-//            }
-//        };
     }
-
 }
